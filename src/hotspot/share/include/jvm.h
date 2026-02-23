@@ -294,6 +294,9 @@ JVM_HasReferencePendingList(JNIEnv *env);
 JNIEXPORT void JNICALL
 JVM_WaitForReferencePendingList(JNIEnv *env);
 
+JNIEXPORT jobject JNICALL
+JVM_ReferenceGet(JNIEnv *env, jobject ref);
+
 /*
  * java.io.ObjectInputStream
  */

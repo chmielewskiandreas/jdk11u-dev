@@ -3328,6 +3328,15 @@ JVM_ENTRY(void, JVM_WaitForReferencePendingList(JNIEnv* env))
   }
 JVM_END
 
+JVM_ENTRY(jobject, JVM_ReferenceGet(JNIEnv* env, jobject ref))
+  JVMWrapper("JVM_ReferenceGet");
+  oop ref_oop = JNIHandles::resolve_non_null(ref);
+  // PhantomReference has its own implementation of get().
+  assert(!java_lang_ref_Reference::is_phantom(ref_oop), "precondition");
+  assert(java_lang_ref_Reference::is_weak(ref_oop) || java_lang_ref_Reference::is_soft(ref_oop), "must be Weak or Soft Reference");
+  oop referent = java_lang_ref_Reference::referent(ref_oop);
+  return JNIHandles::make_local(THREAD, referent);
+JVM_END
 
 // ObjectInputStream ///////////////////////////////////////////////////////////////
 

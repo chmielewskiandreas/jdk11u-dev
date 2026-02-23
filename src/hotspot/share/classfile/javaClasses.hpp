@@ -954,6 +954,7 @@ class java_lang_ref_Reference: AllStatic {
   static inline oop referent(oop ref);
   static inline void set_referent(oop ref, oop value);
   static inline void set_referent_raw(oop ref, oop value);
+
   static inline HeapWord* referent_addr_raw(oop ref);
   static inline oop next(oop ref);
   static inline void set_next(oop ref, oop value);
@@ -967,6 +968,8 @@ class java_lang_ref_Reference: AllStatic {
   static inline void set_queue(oop ref, oop value);
   static bool is_referent_field(oop obj, ptrdiff_t offset);
   static inline bool is_phantom(oop ref);
+  static inline bool is_weak(oop ref);
+  static inline bool is_soft(oop ref);
 };
 
 

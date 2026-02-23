@@ -328,10 +328,17 @@ public abstract class Reference<T> {
      * @return   The object to which this reference refers, or
      *           <code>null</code> if this reference object has been cleared
      */
-    @HotSpotIntrinsicCandidate
     public T get() {
-        return this.referent;
+        return get0();
     }
+
+    /* Implementation of get().  This method exists to avoid making get() all
+     * of virtual, native, and intrinsic candidate. That could have the
+     * undesirable effect of having the native method used instead of the
+     * intrinsic when devirtualization fails.
+     */
+    @HotSpotIntrinsicCandidate
+    private native T get0();
 
     /**
      * Clears this reference object.  Invoking this method will not cause this
