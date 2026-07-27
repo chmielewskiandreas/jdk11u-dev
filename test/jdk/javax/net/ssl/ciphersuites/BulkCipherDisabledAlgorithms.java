@@ -40,7 +40,7 @@ import java.util.List;
 
 import javax.net.ssl.*;
 
-import jdk.test.lib.process.Proc;
+import jdk.test.lib.process.ProcessTools;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.Security;
@@ -70,13 +70,14 @@ public class BulkCipherDisabledAlgorithms {
                         ", disabled=" + disabled +
                         ", expected=" + expected);
 
-                Proc p = Proc.create(
-                        BulkCipherDisabledAlgorithms.class.getName())
-                        .args(mode, suite, expected)
-                        .secprop("jdk.tls.disabledAlgorithms", disabled)
-                        .inheritIO();
+                ProcessBuilder pb = ProcessTools.createJavaProcessBuilder(
+                        BulkCipherDisabledAlgorithms.class.getName(),
+                        mode, suite, expected, disabled);
 
-                p.start().waitFor(0);
+                pb.environment().put("java.security.properties", disabled);
+
+                Process process = pb.inheritIO().start();
+                process.waitFor();
             }
 
             System.out.println("TEST PASS - OK");
